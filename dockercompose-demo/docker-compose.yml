@@ -1,0 +1,19 @@
+#YAML comment syntax
+version: "3"
+
+services:
+  web:
+    image: httpd
+    container_name: mywebcontainer
+    networks:
+      - webnetwork
+    volumes:
+      - myvol: /data
+    ports:
+      - "10080:80"
+networks:
+  webnetwork:
+    driver: bridge
+volumes:
+  myvol:
+    
