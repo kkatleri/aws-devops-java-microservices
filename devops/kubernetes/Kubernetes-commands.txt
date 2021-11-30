@@ -1,0 +1,102 @@
+Setup - 
+
+	Install Minikube
+	Install Kubectl
+	Set Env variables 
+	Go..
+
+Commands - 
+
+1. Start single node Kubernetes cluster on local using Minikube
+> minikube start
+> minikube stop (stops the cluster)
+> minikube delete (deletes the cluster)
+> kubectl get nodes
+
+2. Pod using command lines
+> kubectl run firstpod --image=nginx
+> kubectl get pods
+> kubectl pod describe firstpod
+> winpty kubectl exec -it firstpod -- bash
+> kubectl get pod firstpod -o yaml
+> kubectl delete pod firstpod
+
+3. Pod using YAML file
+> kubectl create -f firstpod.yml
+> kubectl get pod
+> winpty kubectl exec -it firstpod --container db -- bash
+> winpty kubectl exec -it firstpod --container webserver -- bash
+> kubectl delete -f firstpod.yml
+
+4. Selectors
+> kubectl get all --selector='app=fp'
+> kubectl get all --selector='app=fp, team=yellow'
+> kubectl get all --selector='team notin (red)'
+
+5. Namespaces -
+> kubectl get ns
+> kubectl create ns firstns
+> kubectl create -f firstpod.yml --namespace firstns
+> kubectl get pods --namespace firstns
+> kubectl config view
+> kubectl config set-context --current --namespace firstns
+
+6. Cool commands
+> kubectl get all
+> kubectl create -f firstpod.yml --dry-run=client
+> kubectl create -f firstpod.yml --dry-run=server
+> kubectl explain pod
+> kubectl explain pod.spec
+> kubectl delete all --all
+
+7. Deployments
+> kubectl get deployments
+> kubectl create -f webserver.yml
+> kubectl delete deploy mywebserver
+
+8. Services
+> kubectl get services
+> kubectl create -f webserver-svc.yml
+> minikube service webserver-service
+> minikube ip
+
+9. Rolling Updates
+> kubectl replace -f webserver-svc.yml
+> kubectl get deployments
+> kubectl describe deployment mywebserver
+> kubectl rollout history deployment
+> kubectl rollout history deployment --revision=2
+> kubectl rollout undo deployment mywebserver --to-revision=1
+
+10. Manual Scaling
+> kubectl scale deployment mywebserver --replicas=20
+> kubectl scale deployment mywebserver --replicas=8 (it will reduce down to total 8 pods from above 20)
+
+
+11. Volumes
+> minikube ssh
+> kubectl get configmaps
+> kubectl get secrets
+> kubectl get pv (Persistent Volume)
+> kubectl get pvc (Persistent Volume Claim)
+
+--------------------------------------------------------
+Troubleshooting - 
+
+> kubectl exec -it firstpod -- bash
+Unable to use a TTY - input is not a terminal or the right kind of file
+=> use winpty at the start of the command
+> winpty kubectl exec -it firstpod -- bash
+
+=> When using the Docker driver with minikube on Windows 10. the pods exposed via nodeport services are not accessible.
+Solution - Minikube tunneling
+> minikube service list
+> minikube service --url docker-mysql
+
+Then, use tunneling url for service calls
+
+ 
+
+
+
+
