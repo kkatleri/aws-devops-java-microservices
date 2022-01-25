@@ -1,0 +1,29 @@
+- hosts: agent1
+  vars:
+    msg: "Hello Ansible"
+  tasks:
+    - name: Test
+      copy:
+        dest: /root/abc.txt
+        content: "{{msg}}"
+
+- hosts: agent1
+  tasks:
+          - name: create directories if they do not exist
+            file:
+                    path: "{{item}}"
+                    state: directory
+            with_items:
+                    - dir1
+                    - dir2
+
+apt-get remove git
+
+- hosts: agent1
+  tasks:
+          - name: install packages
+            apt:
+                    name:
+                            - git
+                            - mysql-server
+                    update_cache: yes
